@@ -42,6 +42,27 @@ let audioIndex = 0;
 // Get the audio element from index.html
 const audioElement = document.querySelector("audio");
 
+// Function to start the background music properly
+function playAudio() {
+    audioElement.volume = 0.5; // Set initial volume
+    audioElement.loop = true; // Ensure looping
+    audioElement.play().catch(() => {
+        console.log("Autoplay blocked. Click anywhere to start music.");
+    });
+}
+
+// Try playing audio on page load (if allowed)
+document.addEventListener("DOMContentLoaded", () => {
+    playAudio();
+
+    // If autoplay is blocked, allow manual start on user interaction
+    document.body.addEventListener("click", () => {
+        if (audioElement.paused) {
+            playAudio();
+        }
+    });
+});
+
 function handleNoClick() {
     const noButton = document.querySelector('.no-button');
     const yesButton = document.querySelector('.yes-button');
@@ -57,7 +78,7 @@ function handleNoClick() {
 
     // Change the background audio
     audioElement.src = audioFiles[audioIndex];
-    audioElement.play(); // Ensure it plays
+    audioElement.play().catch(err => console.log("Audio play error:", err));
     audioIndex = (audioIndex + 1) % audioFiles.length;
 
     // Ensure audio loops
