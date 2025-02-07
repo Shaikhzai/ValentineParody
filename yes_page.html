@@ -8,11 +8,11 @@
 </head>
 <body>
 
-            <!-- Background Music -->
-            <audio autoplay loop>
-                <source src="audio/canny.mp3" type="audio/mp3">
-                Your browser does not support the audio element.
-            </audio>
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="audio/canny.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 
     <div class="container">
         <h1 class="header_text">Knew you would say yes!</h1>
@@ -20,5 +20,31 @@
             <img src="images/cannyfinal.png">
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const bgMusic = document.getElementById("bgMusic");
+
+            function playAudio() {
+                bgMusic.volume = 0.5;
+                bgMusic.play().catch(err => console.log("Autoplay blocked:", err));
+            }
+
+            playAudio();
+
+            // If autoplay is blocked, enable audio on first user interaction
+            const enableAudio = () => {
+                if (bgMusic.paused) {
+                    playAudio();
+                }
+                document.removeEventListener("click", enableAudio);
+                document.removeEventListener("touchstart", enableAudio);
+            };
+
+            document.addEventListener("click", enableAudio);
+            document.addEventListener("touchstart", enableAudio);
+        });
+    </script>
+
 </body>
 </html>
